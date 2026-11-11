@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Nib</title>
+<style>
+:root{color-scheme:light;font:14px/1.45 system-ui,sans-serif;background:#f5f8f4;color:#1a3026}body{width:270px;margin:0;padding:17px}.head{display:flex;align-items:center;justify-content:space-between;gap:10px}h1{font-size:20px;letter-spacing:-.04em;margin:0}.badge{background:#e3f1e7;color:#20563f;font-size:11px;font-weight:700;border-radius:999px;padding:4px 8px}.rows{margin:15px 0 12px;background:white;border:1px solid #d8e5da;border-radius:10px}.row{display:flex;align-items:center;gap:9px;padding:10px 11px}.row+ .row{border-top:1px solid #e5ede6}.row input{margin:0;accent-color:#215945}.host{display:block;color:#52665c;font-size:11px;overflow-wrap:anywhere}p{margin:0;color:#4b6155;font-size:12px}#error{color:#9a3040;margin-top:7px}#status{margin:10px 0 0;padding:8px 10px;border-radius:8px;background:#e3f1e7;color:#20563f;font-weight:600}#status.warn{background:#fbeee6;color:#8a3d12} 
+</style>
+<div class="head"><h1>Nib</h1><span class="badge" id="version"></span></div>
+<p id="status" role="status">Checking this page…</p>
+<div class="rows">
+  <label class="row"><input id="enabled" type="checkbox" disabled> Enable checking</label>
+  <label class="row"><input id="site" type="checkbox" disabled><span>Check this site<small class="host" id="host"></small></span></label>
+  <label class="row"><input id="context" type="checkbox" disabled> Use Mac sentence model</label>
+  <label class="row"><input id="style" type="checkbox" disabled> Suggest improvements</label>
+  <label class="row"><input id="log" type="checkbox" disabled><span>Troubleshooting log<small class="host">Records which sites Nib runs on, never your text</small></span></label>
+</div>
+<p>Checks stay on this device. Nib needs the Nib app on macOS for sentence fixes: choose More → Connect Browsers… in the Nib menu on your Mac.</p>
+<p id="error" role="status"></p>
+<script src="popup.js"></script>
+</html>

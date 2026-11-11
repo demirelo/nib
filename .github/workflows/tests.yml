@@ -1,0 +1,33 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node Source/browser-test.js
+
+  mac:
+    # This job needs a runner with Xcode 26: the app targets arm64-apple-macosx26.0 and links FoundationModels.
+    # If GitHub does not offer the macos-26 label yet, this job fails at the start and the browser job still runs.
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      # Build into the runner's temporary folder. The app is ad hoc signed, which needs no certificate.
+      - name: Build the app
+        run: bash Source/build.sh "$RUNNER_TEMP/build"
+      # The logic tests need no language model. Apple's on-device model is not available on CI,
+      # so do not add --eval here: the scoring run asks the model.
+      - name: Logic tests
+        run: bash Source/test.sh

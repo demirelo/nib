@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "Nib",
+  "version": "0.2.3",
+  "description": "Private, on-device writing suggestions as you type.",
+  "homepage_url": "https://github.com/demirelo/nib",
+  "minimum_chrome_version": "114",
+  "host_permissions": ["http://*/*", "https://*/*"],
+  "permissions": [
+    "storage",
+    "nativeMessaging", "scripting"],
+  "action": {
+    "default_title": "Nib",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/nib-16.png",
+      "32": "icons/nib-32.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "all_frames": true,
+      "match_about_blank": true,
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/nib-16.png",
+    "32": "icons/nib-32.png",
+    "48": "icons/nib-48.png",
+    "128": "icons/nib-128.png"
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyV+xbP8gPWnqqdUkixFXhxILusDR2uYxebnXouaAkDoxOI9IWns5VXLx09s7qHNvjRv6QWUbucdJ37LQoPTECUnCYnmWaQ0roaa14IoOubqN2ucdbW5+tRtfX1z8WVFLhrkVhKXOjieWvSzYkq6PwNfkDyEoAL2ZtLV6GyvmjYxZEPxbfk+2J9Q2+CdGboH6rSMJDszktdA5NRRz4lD740eCQMJiLfgsaP9ZR7ZOi2G5b6iVBrb9jgl4KO56qGzBILSWrjZJTxhJOcsPfnRKpu83mCGkhvgp8RTBHaCXw8RXhWJao6dmHui3yL+HB9Yz8IdG215ObRJl6eIiKgsB5wIDAQAB",
+  "background": {
+    "service_worker": "background.js"
+  }
+}

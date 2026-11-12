@@ -168,7 +168,10 @@ final class Desktop: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var triedSnippet: (element: AXUIElement, text: String)?
     /// The label check of the focused element. It reads six attributes, so one answer per element is kept.
     var labelCheck: (element: AXUIElement, secret: Bool)?
-    var exposed: Set<pid_t> = []
+    /// Apps that got the first Accessibility switch, with the time it went out.
+    var exposed: [pid_t: Date] = [:]
+    /// Electron apps that also got AXEnhancedUserInterface. See ElectronAccess.swift.
+    var enhanced: Set<pid_t> = []
     var hotKeys: [UInt32: EventHotKeyRef] = [:]
     var enabled: Bool { preferences.object(forKey: "enabled") as? Bool ?? true }
     var allApps: Bool { preferences.object(forKey: "allApps") as? Bool ?? true }

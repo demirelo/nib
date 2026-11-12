@@ -28,7 +28,7 @@ if [[ -f "$source_dir/AppIcon.icns" ]]; then cp "$source_dir/AppIcon.icns" "$app
 xcrun swiftc -O -target arm64-apple-macosx26.0 \
   "$source_dir/ProofEngine.swift" "$source_dir/Proofreader.swift" "$source_dir/Overlay.swift" \
   "$source_dir/Icon.swift" "$source_dir/Editor.swift" "$source_dir/Settings.swift" "$source_dir/Welcome.swift" \
-  "$source_dir/BrowserExtension.swift" \
+  "$source_dir/BrowserExtension.swift" "$source_dir/ElectronAccess.swift" \
   "$source_dir/Desktop.swift" "$source_dir"/Desktop+*.swift -o "$bin/Nib"
 xcrun swiftc -O -target arm64-apple-macosx26.0 \
   "$source_dir/ProofEngine.swift" "$source_dir/Bridge.swift" -o "$bin/NibBridge"

@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.4
 
 - Nib works in Signal Desktop. Signal, an Electron app, showed no text to Nib, because it ignores the switch that Nib sends to Electron apps. Nib now sends a second switch, the one that VoiceOver uses, once to an Electron app that still shows nothing after one second. Other apps get no change.
 - The diagnosis says if the app in front is an Electron app, and if Nib sent it the second switch.

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Nib",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Private, on-device writing suggestions as you type.",
   "homepage_url": "https://github.com/demirelo/nib",
   "minimum_chrome_version": "114",

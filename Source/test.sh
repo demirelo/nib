@@ -14,7 +14,7 @@ else
 
   xcrun swiftc -O -target arm64-apple-macosx26.0 \
     "$source_dir/ProofEngine.swift" "$source_dir/Proofreader.swift" "$source_dir/Overlay.swift" \
-    "$source_dir/BrowserExtension.swift" "$source_dir/Tests.swift" \
+    "$source_dir/BrowserExtension.swift" "$source_dir/ElectronAccess.swift" "$source_dir/Tests.swift" \
     -o "$build_dir/NibTests"
   if [[ "${1:-}" == "--eval" ]]; then
     "$build_dir/NibTests" --eval "$source_dir/eval-cases.tsv"

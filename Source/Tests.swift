@@ -94,8 +94,29 @@ struct Tests {
         expect(left == ["Nib Browser Extension"], "extension copy: no temporary folder is left")
     }
 
+    /// From a user report: Signal Desktop showed no focused element, because it ignores AXManualAccessibility.
+    static func electronAccess() {
+        let files = FileManager.default
+        let root = files.temporaryDirectory.appendingPathComponent("nib-electron-\(UUID().uuidString)")
+        defer { try? files.removeItem(at: root) }
+        let electronApp = root.appendingPathComponent("Signal.app"), plainApp = root.appendingPathComponent("Notes.app")
+        try? files.createDirectory(at: electronApp.appendingPathComponent("Contents/Frameworks/Electron Framework.framework"),
+                                   withIntermediateDirectories: true)
+        try? files.createDirectory(at: plainApp.appendingPathComponent("Contents/Frameworks"), withIntermediateDirectories: true)
+        expect(ElectronAccess.isElectron(electronApp), "electron: an app with the Electron framework is Electron")
+        expect(!ElectronAccess.isElectron(plainApp) && !ElectronAccess.isElectron(nil), "electron: other apps are not")
+        let need = ElectronAccess.needsSecondSwitch
+        expect(need(true, false, 2, false), "electron: no focus after the grace time sends the second switch")
+        expect(!need(true, false, 0.2, false), "electron: the app first gets time to build its tree")
+        expect(!need(true, false, nil, false), "electron: no second switch before the first")
+        expect(!need(true, false, 2, true), "electron: the second switch goes out only once")
+        expect(!need(true, true, 2, false), "electron: an app that shows its focus gets no second switch")
+        expect(!need(false, false, 2, false), "electron: a native app never gets the second switch")
+    }
+
     static func logic() {
         extensionCopy()
+        electronAccess()
         // Sentence finding
         let draft = "I went two the store. It was closed.\nSecond line here"
         let all = ProofEngine.sentences(in: draft)

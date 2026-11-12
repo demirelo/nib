@@ -82,11 +82,23 @@ extension Desktop {
     /// So it is set only for an app that Nib checks live or that the user pointed a shortcut at:
     /// every caller comes after `allowed` or `mustNotRead`, and a never-checked app is refused here again.
     private func expose(_ app: AXUIElement, pid: pid_t) {
-        guard !exposed.contains(pid) else { return }
+        guard exposed[pid] == nil else { return }
         guard let id = NSRunningApplication(processIdentifier: pid)?.bundleIdentifier, !blocked(id) else { return }
-        if exposed.count > 200 { exposed.removeAll() }
-        exposed.insert(pid)
+        if exposed.count > 200 { exposed.removeAll(); enhanced.removeAll() }
+        exposed[pid] = Date()
         AXUIElementSetAttributeValue(app, "AXManualAccessibility" as CFString, kCFBooleanTrue)
+    }
+
+    /// Some Electron apps (Signal) ignore the first switch. Such an app gets the second switch once.
+    /// The same gate as `expose` applies: the caller already passed `allowed` or `mustNotRead`.
+    private func exposeHarder(_ app: AXUIElement, pid: pid_t) {
+        let running = NSRunningApplication(processIdentifier: pid)
+        guard let id = running?.bundleIdentifier, !blocked(id),
+              ElectronAccess.needsSecondSwitch(electron: ElectronAccess.isElectron(running?.bundleURL), focusFound: false,
+                                               firstSwitchAge: exposed[pid].map { Date().timeIntervalSince($0) },
+                                               secondSent: enhanced.contains(pid)) else { return }
+        enhanced.insert(pid)
+        AXUIElementSetAttributeValue(app, "AXEnhancedUserInterface" as CFString, kCFBooleanTrue)
     }
 
     func focusedElement(of pid: pid_t) -> AXUIElement? {
@@ -94,7 +106,10 @@ extension Desktop {
         AXUIElementSetMessagingTimeout(app, 0.15)
         expose(app, pid: pid)
         guard let value = readAttribute(app, kAXFocusedUIElementAttribute as CFString),
-              CFGetTypeID(value) == AXUIElementGetTypeID() else { return nil }
+              CFGetTypeID(value) == AXUIElementGetTypeID() else {
+            exposeHarder(app, pid: pid)
+            return nil
+        }
         let element = value as! AXUIElement
         AXUIElementSetMessagingTimeout(element, 0.15)
         return element

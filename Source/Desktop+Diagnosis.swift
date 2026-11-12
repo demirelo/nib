@@ -28,8 +28,13 @@ extension Desktop {
         guard enabled else { return ("Live checks are off", lines) }
         guard reason.isEmpty else { return (name + ": " + reason, lines) }
         if IsSecureEventInputEnabled() { return ("Paused: a password field has the keyboard", lines) }
+        let electron = ElectronAccess.isElectron(app.bundleURL)
+        add("Electron app", electron ? "yes" : "no")
         guard let element = focusedElement(of: app.processIdentifier) else {
             add("Focused element", "NONE")
+            if electron {
+                add("Second Accessibility switch", enhanced.contains(app.processIdentifier) ? "sent" : "not sent yet")
+            }
             return (name + ": no text field has the focus", lines)
         }
         let role = readAttribute(element, kAXRoleAttribute as CFString) as? String ?? "none"

@@ -65,6 +65,7 @@ Files can move. Check the folders if this list does not match.
 | `Settings.swift` | The settings window. |
 | `Welcome.swift` | The setup guide: permission, model choice, browser extension, first try. |
 | `BrowserExtension.swift` | Keeps the user's copy of the extension in a normal folder, the same as the copy in the app. |
+| `ElectronAccess.swift` | Decides when an Electron app, such as Signal, needs the second Accessibility switch. |
 | `Icon.swift` | The drawing of the Nib mark, for the app, the menu bar and the extension. |
 | `Bridge.swift` | The native messaging host `com.nib.bridge` for the extension. It builds to `NibBridge`. |
 | `Tests.swift` | The logic tests and the scoring run. |
